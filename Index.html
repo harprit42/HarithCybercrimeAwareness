@@ -9,7 +9,7 @@
         margin: 0;
         font-family: Arial, sans-serif;
         background: black;
-        color: #00FF00;
+        color: #fff; /* Main text white */
     }
     header, footer {
         text-align: center;
@@ -93,6 +93,19 @@
         border:none;
         cursor:pointer;
     }
+    /* Password Meter */
+    #pwResult {
+        margin-top:10px;
+        height:20px;
+        width:100%;
+        background:#333;
+    }
+    #pwMeter {
+        height:100%;
+        width:0%;
+        background:green;
+        transition:width 0.3s;
+    }
 </style>
 </head>
 <body>
@@ -112,8 +125,6 @@
 
 <!-- Main Page Content -->
 <div class="mainPage">
-
-    <!-- Main Heading -->
     <h1 style="text-align:center; margin-top:80px;">Cyber Security </h1>
 
     <div class="section">
@@ -135,7 +146,9 @@
         <h2>🔑 Password Strength Checker</h2>
         <input type="text" id="pwInput" placeholder="Enter Password">
         <button id="checkPw">Check</button>
-        <div id="pwResult"></div>
+        <div id="pwResult">
+            <div id="pwMeter"></div>
+        </div>
     </div>
 </div>
 
@@ -145,21 +158,18 @@
     <h2>🚨 Cyber Crime</h2>
     <button class="toggleBtn" data-target="cyberCrimeInfo">🔽 Details</button>
     <div id="cyberCrimeInfo" class="infoContent fade">
-        <p>Cybercrime is criminal activity that uses computers, networks, or digital devices to commit illegal acts like fraud, identity theft, and malware attacks. These crimes, which can be financially motivated or aimed at causing damage, exploit digital vulnerabilities and can have far-reaching consequences for individuals, businesses, and governments..</p>
+        <p>Cyber security is the practice of protecting computers, networks, software, and sensitive data from unauthorized access, attacks, or damage. In today’s digital era, where almost every aspect of personal and professional life relies on technology, cyber security has become a critical necessity. It encompasses a broad range of strategies, tools, and measures designed to safeguard information systems against cyber threats such as hacking, malware, ransomware, phishing, and identity theft. One of the core goals of cyber security is to maintain the confidentiality, integrity, and availability of data, ensuring that sensitive information is only accessible to authorized users, remains accurate and unaltered, and is readily available when needed. Cyber threats are constantly evolving, with cybercriminals employing increasingly sophisticated methods to exploit vulnerabilities in systems, steal personal information, disrupt services, or commit financial fraud. As technology advances, new challenges arise, including the proliferation of Internet of Things (IoT) devices, cloud computing, artificial intelligence applications, and remote work infrastructure, all of which can introduce additional vulnerabilities. Effective cyber security requires a combination of technical defenses, such as firewalls, antivirus software, encryption, intrusion detection systems, and secure network architecture, as well as human-centered approaches, including user awareness, training programs, and strict access controls. Organizations must adopt a proactive mindset, conducting regular risk assessments, vulnerability scanning, and penetration testing to identify and mitigate potential weaknesses before attackers can exploit them. Incident response plans and disaster recovery procedures are also essential components, enabling organizations to respond quickly to breaches, minimize damage, and restore normal operations efficiently. Moreover, regulatory compliance and adherence to legal frameworks, such as the General Data Protection Regulation (GDPR) and the Cybersecurity Framework, are critical for organizations to protect customer data and avoid penalties. On an individual level, cyber security awareness includes adopting strong and unique passwords, enabling multi-factor authentication, recognizing phishing attempts, keeping software and operating systems updated, and exercising caution when sharing personal information online. Governments, private companies, and international organizations increasingly collaborate to share threat intelligence, develop cybersecurity standards, and promote best practices, recognizing that cyber threats are borderless and can have widespread economic, social, and political impacts. Education and research in cyber security are also vital, as training the next generation of security professionals ensures that society can keep pace with emerging threats. Ultimately, cyber security is not just a technical requirement but a fundamental aspect of maintaining trust and reliability in a digital society. By combining advanced technologies, sound policies, and informed human behavior, cyber security aims to create a safer digital environment where individuals and organizations can operate confidently, innovate without fear of attack, and safeguard the sensitive information that underpins modern life. As cyber threats continue to grow in frequency and sophistication, investing in robust cyber security measures remains an essential priority for both individuals and organizations alike, emphasizing the need for vigilance, adaptability, and continuous improvement in the face of an ever-changing digital landscape..</p>
         <button class="toggleBtn" data-target="hackersInfo">🔽 Hackers</button>
         <div id="hackersInfo" class="infoContent fade">
-            <p>A hacker is a person with expertise in information technology<br> who gains unauthorized access to<br> a computer system, often by exploiting vulnerabilities<br> for criminal purposes like stealing data or money.</p>
+            <p>A hacker is a person with expertise in information technology who gains unauthorized access to a computer system, often exploiting vulnerabilities for criminal purposes.</p>
         </div>
         <button class="toggleBtn" data-target="wormsInfo">🔽 Worms</button>
         <div id="wormsInfo" class="infoContent fade">
-            <p>Computer worms are a type of self-replicating malware that
-               can spread across networks to cause harm, including system disruption, data theft, and creating
-               backdoors for remote access. They exploit software vulnerabilities or spread through email attachments,
-                infected websites, or file-sharing networks without user intervention</p>
+            <p>Computer worms are self-replicating malware that spread across networks to cause harm, including data theft and creating backdoors for remote access.</p>
         </div>
         <button class="toggleBtn" data-target="virusesInfo">🔽 Viruses</button>
         <div id="virusesInfo" class="infoContent fade">
-            <p>Viruses are malicious programs designed to steal data, cause damage, or gain unauthorized access to computer systems for financial gain, espionage, or disruption.</p>
+            <p>Viruses are malicious programs designed to steal data, cause damage, or gain unauthorized access for financial gain, espionage, or disruption.</p>
         </div>
     </div>
 </div>
@@ -200,10 +210,20 @@ document.querySelectorAll('.toggleBtn').forEach(btn=>{
 // Password Strength Checker
 document.getElementById('checkPw').addEventListener('click',()=>{
     let pw = document.getElementById('pwInput').value;
-    let strength = "Weak";
-    if(pw.length>12 && /[A-Z]/.test(pw) && /[0-9]/.test(pw) && /[^A-Za-z0-9]/.test(pw)) strength="Strong";
-    else if(pw.length>8) strength="Medium";
-    document.getElementById('pwResult').textContent = "Password Strength: "+strength;
+    let strength = 0;
+    if(pw.length>12 && /[A-Z]/.test(pw) && /[0-9]/.test(pw) && /[^A-Za-z0-9]/.test(pw)) strength=2;
+    else if(pw.length>8) strength=1;
+    const meter = document.getElementById('pwMeter');
+    if(strength===0){
+        meter.style.width="33%";
+        meter.style.background="red";
+    } else if(strength===1){
+        meter.style.width="66%";
+        meter.style.background="yellow";
+    } else{
+        meter.style.width="100%";
+        meter.style.background="green";
+    }
 });
 
 // Matrix Background
